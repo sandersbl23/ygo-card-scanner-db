@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { recognizeCardFromPhoto } from '../services/cardRecognition';
 
 export default function ScanScreen({ navigation }) {
+  const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
@@ -63,7 +65,7 @@ export default function ScanScreen({ navigation }) {
       {error && <Text style={styles.errorText}>{error}</Text>}
 
       <TouchableOpacity
-        style={styles.captureButton}
+        style={[styles.captureButton, { marginBottom: 16 + insets.bottom }]}
         onPress={handleCapture}
         disabled={isProcessing}
       >

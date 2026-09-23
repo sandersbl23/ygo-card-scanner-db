@@ -15,6 +15,11 @@ export default function CardListItem({ card }) {
           {card.type}
           {card.rarity ? ` \u00b7 ${card.rarity}` : ''}
         </Text>
+        {card.location && (
+          <View style={styles.locationBadge}>
+            <Text style={styles.locationText}>{card.location}</Text>
+          </View>
+        )}
       </View>
       <Text style={styles.quantity}>x{card.quantity}</Text>
     </View>
@@ -36,5 +41,14 @@ const styles = StyleSheet.create({
   thumbnailPlaceholder: { backgroundColor: '#ddd' },
   name: { fontSize: 14, fontWeight: '500' },
   subtitle: { fontSize: 12, color: '#666', marginTop: 2 },
+  locationBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#f0f0f0',
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    marginTop: 4,
+  },
+  locationText: { fontSize: 10, color: '#666', fontWeight: '500' },
   quantity: { fontSize: 13, fontWeight: '600', color: '#333' },
 });

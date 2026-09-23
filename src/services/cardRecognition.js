@@ -12,7 +12,7 @@
 
 import { searchCardsFuzzy } from './ygoApi';
 
-const RECOGNITION_API_URL = 'http://localhost:3000/api/recognize-card'; // TODO: replace with your deployed server URL
+const RECOGNITION_API_URL = 'https://ygo-card-scanner-db.onrender.com';
 
 export async function recognizeCardFromPhoto(base64Image) {
   const response = await fetch(RECOGNITION_API_URL, {

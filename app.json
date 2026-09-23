@@ -6,37 +6,52 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1a1a1a"
-    },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourname.cardscanner",
+      "bundleIdentifier": "sanders.ygocardscanner",
       "infoPlist": {
         "NSCameraUsageDescription": "Used to scan your cards so they can be identified and added to your collection."
       }
     },
     "android": {
-      "package": "com.yourname.cardscanner",
+      "package": "sanders.ygocardscanner",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a1a"
       },
-      "permissions": ["CAMERA"]
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#1a1a1a"
+        }
+      ],
+      [
         "expo-camera",
         {
           "cameraPermission": "Allow Card Scanner to access your camera to scan cards."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "3dbe302e-5306-49d8-b31b-2a81eee2c500"
+      }
+    }
   }
 }

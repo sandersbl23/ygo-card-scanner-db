@@ -21,12 +21,53 @@ npx expo start
    card data (type, artwork, every known printing/rarity).
 3. **Confirm match** (`src/screens/ConfirmMatchScreen.js`) - shows the match,
    lets you pick the correct printing/rarity (a photo alone can't always
-   tell foil rarities apart), and set quantity.
+   tell foil rarities apart), pick a location tag, and set quantity.
 4. **Save** - written to a local SQLite database
    (`src/db/database.js`); if the exact card+rarity+set already exists,
    quantity is incremented instead of creating a duplicate row.
-5. **Collection** (`src/screens/CollectionScreen.js`) - filterable list by
-   card type, showing rarity and quantity.
+5. **Collection** (`src/screens/CollectionScreen.js`) - search, filter by
+   Monster/Spell/Trap, sort by name/type/rarity, tap a card to edit its
+   quantity/location or delete it, export to CSV/JSON.
+6. **Decks** (`src/screens/DecksScreen.js`, `DeckDetailScreen.js`) - a
+   separate tab for building decks from cards already in your collection.
+   Adding a card to a deck never changes its quantity in the main
+   collection - decks just reference cards, they don't consume them.
+
+## What changed in this round of fixes
+
+- **Monster/Spell/Trap filters actually work now.** They were comparing the
+  tab name directly against YGOPRODeck's raw `type` field (e.g. "Effect
+  Monster"), which never matched "Monster" exactly. Added a normalized
+  `category` column, computed once at insert time, that the filters use
+  instead. Existing databases migrate automatically the next time the app
+  opens - no data loss.
+- **Search** - a text field on the Collection screen filters by name (SQL
+  `LIKE`, combined with whatever category filter is active).
+- **Sort dropdown** - tap "Sort: Name" to switch between Name/Type/Rarity on
+  either tab's list.
+- **Tap a card to edit it** - opens a screen to change quantity (+/-
+  stepper), change its location tag (Binder/Bulk/Deck), or delete it
+  outright.
+- **Location tags** - every card has a `location` field (Binder/Bulk/Deck),
+  editable from the edit screen, shown as a small badge on each row.
+- **Decks tab** - a whole second tab. Create a deck, name it, add cards to
+  it by searching your collection, adjust per-deck quantities, remove
+  cards. None of this touches `cards.quantity` in your main collection -
+  deck membership is tracked in a separate `deck_cards` table.
+- **Scan/capture buttons moved up** - both now add the device's safe-area
+  bottom inset to their spacing (`react-native-safe-area-context`), so they
+  sit above the phone's gesture/nav bar instead of behind it.
+- **CSV/JSON export** - an Export button on the Collection screen writes a
+  file and opens the native share sheet (`expo-file-system` +
+  `expo-sharing`), so you can back up or move your collection.
+
+Before running any of this, install the new dependencies:
+```bash
+npx expo install --fix
+```
+This adds `@react-navigation/bottom-tabs`, `expo-file-system`, and
+`expo-sharing`, and lets Expo pick the exact versions that match your SDK
+rather than trusting hand-typed numbers in `package.json`.
 
 ## Building a real installable app (EAS Build)
 
@@ -116,7 +157,8 @@ one, so a wrong top guess is a tap to fix rather than a dead end.
 
 ## Next steps to build out
 
-- Card detail screen (tap a card for full stats/effect text)
-- CSV export of the collection
-- Deleting/editing existing entries (swipe-to-delete on the list)
+- Card detail screen (tap into full stats/effect text, not just the edit form)
+- Deck legality/size validation (40/60 card minimums, banlist checks)
+- Renaming a deck from the Decks list (function already exists in
+  `database.js` as `renameDeck` - just needs a UI hook)
 - Offline queue for scans made without network access
