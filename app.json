@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Card Scanner",
+    "slug": "card-scanner-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1a1a"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.cardscanner",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Used to scan your cards so they can be identified and added to your collection."
+      }
+    },
+    "android": {
+      "package": "com.yourname.cardscanner",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a1a1a"
+      },
+      "permissions": ["CAMERA"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Card Scanner to access your camera to scan cards."
+        }
+      ]
+    ]
+  }
+}
